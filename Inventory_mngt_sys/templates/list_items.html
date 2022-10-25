@@ -1,0 +1,37 @@
+
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+
+    <div class="jumbotron">
+        <div class="header">ITEMS</div>
+        <div class="display_table">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Count</th>
+                    <th>Category</th>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+
+            {% for stock_item in stock %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{stock_item.category}} </td>
+                <td>{{stock_item.item_name}}</td>
+                <td>{{stock_item.quantity}}</td>
+            </tr>
+
+            {% endfor %}
+                
+
+        </table>
+    </div>
+    </div>
+
+        
+       
+{% endblock %}
+        

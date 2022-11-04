@@ -1,28 +1,29 @@
 import imp
 from unicodedata import category
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from . models import Stock
-from . forms import StockCreateForm,StockSearchForm
+from . forms import StockCreateForm,StockUpdateForm
 
 def home(request):
     
     return render(request , "home.html")
 
 def list_items(request):
-    formsearch = StockSearchForm(request.POST)
+    
+    search = request.GET.get("search")
     stock = Stock.objects.all()
     context = {
         "stock"  : stock,
-        "form"   : formsearch,
      
         }
-    if request.method == 'POST':
-        search = Stock.objects.filter(category__icontains=formsearch['category'].value()) 
-			
+    if request.method == 'GET':
         
-        context = {
-        "stock"  :  search,
-        "form"   : formsearch,
+        if search is not None:
+            search = Stock.objects.filter(category__icontains=search) 
+                
+            
+            context = {
+            "stock"  :  search,
         
         
       }
@@ -43,9 +44,20 @@ def add_item(request):
     }        
     return render(request , 'add_item.html', context )       
 
-def edit_item(request):
+def update_item(request, pk):
     
-    pass
+    queryset = Stock.objects.get(id=pk)
+    form = StockUpdateForm(instance=queryset)
+    if request.method == 'POST':
+        form  = StockUpdateForm(request.POST, instance=queryset)
+        if form.is_valid():
+            form.save()
+            return redirect('/list_items')
+        
+    context = {
+		'form':form
+	}
+    return render(request, 'add_item.html', context)    
 
 def delete_item(request):
     

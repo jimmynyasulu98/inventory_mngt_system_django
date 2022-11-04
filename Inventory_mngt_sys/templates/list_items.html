@@ -5,12 +5,12 @@
 {% block content %}
 
     <div class="jumbotron">
-        <form method='POST' action =''>
-            {% csrf_token %}
-            {{form|crispy}}
-            <input type="submit" value="Search">
+      
+        
+        <form class="d-flex" method="get" role="search">
+            <input class="form-control me-2" name="search" type="search" placeholder="Search Items" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
           </form>
-                
 
         <div class="header">ITEMS</div>
         <div class="display_table">
@@ -25,11 +25,13 @@
             </thead>
 
             {% for stock_item in stock %}
-            <tr>
+            <tr> 
+                
                 <td>{{forloop.counter}}</td>
                 <td>{{stock_item.category}} </td>
-                <td>{{stock_item.item_name}}</td>
+                <td><a href= "{% url 'update_item' stock_item.id %}">{{stock_item.item_name}}</a></td>
                 <td>{{stock_item.quantity}}</td>
+               
             </tr>
 
             {% endfor %}
